@@ -36,4 +36,63 @@ public class CSVTests {
                           "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith\n";
         assertEquals(expected, csv.toString());
     }
+
+    @Test
+    void testInsertAt() {
+        String[] lines = {
+            "image1.jpg,Image One,John Doe,John,Doe",
+            "image3.jpg,Image Three,Bob Brown,Bob,Brown"
+        };
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith");
+        csv.insertAt(1, newLine);
+        assertEquals(3, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+        assertEquals("image2.jpg", ((ImageAndPersonLine)csv.lines[1]).imageFileName());
+        assertEquals("image3.jpg", ((ImageAndPersonLine)csv.lines[2]).imageFileName());
+    }
+
+    @Test
+    void testInsertAtBeginning() {
+        String[] lines = {
+            "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith",
+            "image3.jpg,Image Three,Bob Brown,Bob,Brown"
+        };
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image1.jpg,Image One,John Doe,John,Doe");
+        csv.insertAt(0, newLine);
+        assertEquals(3, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+        assertEquals("image2.jpg", ((ImageAndPersonLine)csv.lines[1]).imageFileName());
+        assertEquals("image3.jpg", ((ImageAndPersonLine)csv.lines[2]).imageFileName());
+    }
+
+    @Test
+    void testInsertAtEnd() {
+        String[] lines = {
+            "image1.jpg,Image One,John Doe,John,Doe",
+            "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith"
+        };
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image3.jpg,Image Three,Bob Brown,Bob,Brown");
+        csv.insertAt(2, newLine);
+        assertEquals(3, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+        assertEquals("image2.jpg", ((ImageAndPersonLine)csv.lines[1]).imageFileName());
+        assertEquals("image3.jpg", ((ImageAndPersonLine)csv.lines[2]).imageFileName());
+    }
+
+    @Test
+    void testInsertAtInvalidIndex() {
+        String[] lines = {
+            "image1.jpg,Image One,John Doe,John,Doe",
+            "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith"
+        };
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image3.jpg,Image Three,Bob Brown,Bob,Brown");
+        assertThrows(ArrayIndexOutOfBoundsException.class, () ->
+            csv.insertAt(-1, newLine));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () ->
+            csv.insertAt(3, newLine));
+    }
 }

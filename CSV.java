@@ -34,4 +34,26 @@ public class CSV {
         }
         return sb.toString();
     }
+
+    /**
+     * Inserts a CSVLine at the specified index.   
+     * @param index - the index at which to insert the line
+     * @param line  - the line to insert
+     * @throws ArrayIndexOutOfBoundsException if the index is negative, or
+     * greater than the number of lines.
+     */
+    public void insertAt(int index, CSVLine line) {
+        if (index < 0 || index > lines.length) {
+            throw new ArrayIndexOutOfBoundsException("Index out of bounds: " + index);
+        }
+        CSVLine[] newLines = new CSVLine[lines.length + 1];
+        for (int i = 0; i < index; i++) {
+            newLines[i] = lines[i];
+        }
+        newLines[index] = line;
+        for (int i = index; i < lines.length; i++) {
+            newLines[i + 1] = lines[i];
+        }
+        lines = newLines;
+    }
 }
