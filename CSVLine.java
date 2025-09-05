@@ -1,14 +1,22 @@
 /**
- * The CSVLine class breaks up a CSV line into its constituent parts.
+ * The CSVLine class stores each field of a CSV line.
  */
 public class CSVLine {
     private String[] fields;
+
+    /**
+     * Constructor - creates an empty CSVLine object.
+     */
+    public CSVLine() {
+        fields = new String[0];
+    }
+
     /**
      * Constructor - creates a CSVLine object from a CSV line.
-     * @param line - the CSV input line.
+     * @param csvFields - the value of each field in the CSV line.
      */
-    public CSVLine(String line) {
-        fields = line.split(",");
+    public CSVLine(String[] csvFields) {
+        fields = csvFields;
     }
 
     /**
@@ -29,5 +37,18 @@ public class CSVLine {
      */
     public String field(int index) {
         return fields[index];
+    }
+
+    /**
+     * Adds a field to the end of the CSVLine.
+     * @param field
+     */
+    public void addField(String field) {
+        String[] newFields = new String[fields.length + 1];
+        for (int i = 0; i < fields.length; i++) {
+            newFields[i] = fields[i];
+        }
+        newFields[fields.length] = field;
+        fields = newFields;
     }
 }
