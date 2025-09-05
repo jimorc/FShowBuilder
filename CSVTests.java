@@ -95,4 +95,45 @@ public class CSVTests {
         assertThrows(ArrayIndexOutOfBoundsException.class, () ->
             csv.insertAt(3, newLine));
     }
+
+    @Test
+    void testAppend() {
+        String[] lines = {
+            "image1.jpg,Image One,John Doe,John,Doe",
+            "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith"
+        };
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image3.jpg,Image Three,Bob Brown,Bob,Brown");
+        csv.append(newLine);
+        assertEquals(3, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+        assertEquals("image2.jpg", ((ImageAndPersonLine)csv.lines[1]).imageFileName());
+        assertEquals("image3.jpg", ((ImageAndPersonLine)csv.lines[2]).imageFileName());
+    }
+
+    @Test
+    void testAppendToEmptyCSV() {
+        String[] lines = {};
+        CSV csv = new CSV(lines);
+        CSVLine newLine = new ImageAndPersonLine("image1.jpg,Image One,John Doe,John,Doe");
+        csv.append(newLine);
+        assertEquals(1, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+    }
+
+    @Test
+    void testAppendMultiple() {
+        String[] lines = {};
+        CSV csv = new CSV(lines);
+        CSVLine line1 = new ImageAndPersonLine("image1.jpg,Image One,John Doe,John,Doe");
+        CSVLine line2 = new ImageAndPersonLine("image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith");
+        CSVLine line3 = new ImageAndPersonLine("image3.jpg,Image Three,Bob Brown,Bob,Brown");
+        csv.append(line1);
+        csv.append(line2);
+        csv.append(line3);
+        assertEquals(3, csv.lines.length);
+        assertEquals("image1.jpg", ((ImageAndPersonLine)csv.lines[0]).imageFileName());
+        assertEquals("image2.jpg", ((ImageAndPersonLine)csv.lines[1]).imageFileName());
+        assertEquals("image3.jpg", ((ImageAndPersonLine)csv.lines[2]).imageFileName());
+    }
 }
