@@ -64,4 +64,13 @@ public class ImageAndPersonLine extends CSVLine {
     public String personLastName() {
         return field(4);
     }
+
+    /**
+     * Returns a String representation of the object.
+     * @return a String representation of the object.
+     */
+    public String toString() {
+        return imageFileName() + "," + imageTitle() + "," + personFullName() + "," +
+            personFirstName() + "," + personLastName();
+    }
 }

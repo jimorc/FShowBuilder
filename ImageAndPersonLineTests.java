@@ -23,4 +23,13 @@ public class ImageAndPersonLineTests {
         assertEquals("John", ipl.personFirstName());
         assertEquals("Doe", ipl.personLastName());
     }
+
+    @Test
+    void testToString() {
+        ImageAndPersonLine ipl = new ImageAndPersonLine("image.jpg,image title,John Doe,John,Doe");
+        assertEquals("image.jpg,image title,John Doe,John,Doe", ipl.toString());
+
+        ImageAndPersonLine ipl2 = new ImageAndPersonLine("image.jpg,\"image, title\",John Doe,John,Doe");
+        assertEquals("image.jpg,\"image, title\",John Doe,John,Doe", ipl2.toString());
+    }   
 }
