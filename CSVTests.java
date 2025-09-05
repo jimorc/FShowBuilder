@@ -24,4 +24,16 @@ public class CSVTests {
         assertEquals("Jane", ((ImageAndPersonLine)csv.lines[1]).personFirstName());
         assertEquals("Smith", ((ImageAndPersonLine)csv.lines[1]).personLastName());
     }
+
+    @Test
+    void testToString() {
+        String[] lines = {
+            "image1.jpg,Image One,John Doe,John,Doe",
+            "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith"
+        };
+        CSV csv = new CSV(lines);
+        String expected = "image1.jpg,Image One,John Doe,John,Doe\n" +
+                          "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith\n";
+        assertEquals(expected, csv.toString());
+    }
 }

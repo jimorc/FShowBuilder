@@ -15,4 +15,23 @@ public class CSV {
             lines[i] = new ImageAndPersonLine(ipLines[i]);
         }
     }
+
+    /**
+     * Returns a string representation of the CSV object.
+     * @return a string representation of the CSV object.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (CSVLine line : lines) {
+            for (int i = 0; i < line.length(); i++) {
+                sb.append(line.field(i));
+                if (i < line.length() - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
