@@ -39,4 +39,15 @@ class CSVLineTests {
         assertEquals("a", csvL.field(0));
         assertEquals("b", csvL.field(1));
     }
+
+    @Test
+    void addFields() {
+        CSVLine csvL = new CSVLine();
+        String[] fields = {"a", "b", "c"};
+        csvL.addFields(fields);
+        assertEquals(3, csvL.length());
+        assertEquals("a", csvL.field(0));
+        assertEquals("b", csvL.field(1));
+        assertEquals("c", csvL.field(2)); 
+    } 
 }

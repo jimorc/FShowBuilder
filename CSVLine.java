@@ -51,4 +51,14 @@ public class CSVLine {
         newFields[fields.length] = field;
         fields = newFields;
     }
+
+    /**
+     * Adds multiple fields to the end of the CSVLine.
+     * @param newFields - the fields to add
+     */
+    public void addFields(String[] newFields) {
+        for (String field : newFields) {
+            addField(field);
+        }
+    }
 }
