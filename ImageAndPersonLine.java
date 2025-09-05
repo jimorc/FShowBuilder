@@ -68,7 +68,10 @@ public class ImageAndPersonLine extends CSVLine {
     /**
      * Returns a String representation of the object.
      * @return a String representation of the object.
+     * @throws ArrayIndexOutOfBoundsException if the object does not
+     * contain at least five fields.
      */
+    @Override
     public String toString() {
         return imageFileName() + "," + imageTitle() + "," + personFullName() + "," +
             personFirstName() + "," + personLastName();
