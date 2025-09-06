@@ -120,6 +120,9 @@ public class CSV {
         String fileName = null;
         if (r == JFileChooser.APPROVE_OPTION) {
             fileName = j.getSelectedFile().getAbsolutePath();
+        } else {
+            JOptionPane.showMessageDialog(null, "No file selected. Exiting.");
+            System.exit(0);
         }
         return fileName;
     }
