@@ -1,34 +1,60 @@
+import java.nio.file.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
+import java.util.List;
 
 /**
  * The CSV class stores multiple CSVLine objects.
+ * 
+ * It uses the Builder pattern to create a CSV object. The only required
+ * parameter is the name of the CSV file to read. If no file name is provided,
+ * a file chooser dialog is displayed to select a CSV file.
+ * ```java
+ * CSV csv = new CSV.Builder()
+ *     .fileName("test.csv")  // optional, if not provided a file chooser dialog is displayed
+ *     .build();
+ * ```
  */
 public class CSV {
-    String fileName;
-    CSVLine[] lines;
+    String fileName = null;
+    CSVLine[] lines = new CSVLine[0];
 
     /**
-     * Constructor - creates a CSV object from an array of CSV lines.
-     * @param ipLines  - the CSV input lines. Each line must be in the format required
-     * by the ImageAndPersonLine class.
+     * This constructor is private. Use the Builder class to create a CSV object.
+     * @param builder - the Builder object used to create the CSV object.
      */
-    public CSV(String[] ipLines) {
-        lines = new CSVLine[ipLines.length];
-        for (int i = 0; i < ipLines.length; i++) {
-            lines[i] = new ImageAndPersonLine(ipLines[i]);
-        }
+    private CSV(Builder builder) {
+        this.fileName = builder.fileName;
     }
 
-    public CSV() {
-        getCSVFileName();
-        if (fileName == null) {
-            JOptionPane.showMessageDialog(null, "No file selected. Exiting.");
-            System.exit(0);
+    /**
+     * The Builder class is used to create a CSV object.
+     */
+    public static class Builder {
+        private String fileName;
+
+        /**
+         * Sets the name of the CSV file to read.
+         * @param fileName the path to the CSV file.
+         * @return returns the Builder object.
+         */
+        public Builder fileName(String fileName) {
+            this.fileName = fileName;
+            return this;
         }
-        // For now, just create an empty CSV object.
-        this.lines = new CSVLine[0];
-        System.out.printf("CSVFile Selected: %s%n", fileName);
+
+        /**
+         * Builds the CSV object.
+         * @return the CSV object.
+         */
+        public CSV build() {
+            if (fileName == null) {
+                fileName = CSV.getCSVFileName();
+            }
+            CSV csv = new CSV(this);
+            csv.loadCSVFile();
+            return csv;
+        }
     }
 
     /**
@@ -82,19 +108,42 @@ public class CSV {
 
     /**
      * Opens a file chooser dialog to select a CSV file.
-     * @return The name of the seleceted CSV file, or null if no file was selected.
+     * @return The name of the selected CSV file, or null if no file was selected.
      */
-    private void getCSVFileName() {
+    private static String getCSVFileName() {
         JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         j.setDialogTitle("Select a CSV file");
         j.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files", "csv");
         j.addChoosableFileFilter(filter);  
         int r = j.showOpenDialog(null);
+        String fileName = null;
         if (r == JFileChooser.APPROVE_OPTION) {
             fileName = j.getSelectedFile().getAbsolutePath();
-        } else {
-            fileName = null;
+        }
+        return fileName;
+    }
+
+    /**
+     * Loads the CSV file specified by the fileName field.
+     * The lines field is populated with CSVLine objects.
+     * If there is an error reading the file, an error message is
+     * displayed and the program exits.
+     * 
+     * This file is protected rather than private so that
+     * it can called for testing purposes.
+     */
+    protected void loadCSVFile() {
+        Path path = Paths.get(fileName);
+        try {
+            List<String> allLines = java.nio.file.Files.readAllLines(path);
+            lines = new CSVLine[allLines.size()];
+            for (int i = 0; i < allLines.size(); i++) {
+                lines[i] = new ImageAndPersonLine(allLines.get(i));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error reading file: " + e.getMessage());
+            System.exit(0);
         }
     }
 }
