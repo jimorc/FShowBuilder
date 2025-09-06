@@ -4,12 +4,14 @@ public class ImageAndPersonLine extends CSVLine {
      * processing is required because the image title may contain commas. In that case,
      * the title must be enclosed in double quotes, although no checking is done to
      * ensure that this is the case.
-     * @param line - the CSV input line. The fields must be in the following order:
-     *  0. image file name
-     *  1. image title
-     *  2. person's full name
-     *  3. person's first name
-     *  4. person's last name
+     * @param line - the CSV input line. The fields must be in the following order:<br>
+     *  0. image file name<br>
+     *  1. image title<br>
+     *  2. person's full name<br>
+     *  3. person's first name<br>
+     *  4. person's last name<br>
+     * @throws ArrayIndexOutOfBoundsException if the line does not contain at least
+     * five fields.
      */
     public ImageAndPersonLine(String line) {
         int first = line.indexOf(',');
