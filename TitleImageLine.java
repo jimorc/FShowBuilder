@@ -5,6 +5,7 @@ public class TitleImageLine extends CSVLine {
     /**
      * Constructor - creates a TitleImageLine object from a title.
      * @param title - the title
+     * @throws IllegalArgumentException if the imageName does not end with .jpg
      */
     public TitleImageLine(String imageName) {
         if (!imageName.toLowerCase().endsWith(".jpg")) {
