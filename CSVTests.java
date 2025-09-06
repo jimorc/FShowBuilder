@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 public class CSVTests {
     @Test
-    void testConstructor() {
+    void testLinesConstructor() {
         String[] lines = {
             "image1.jpg,Image One,John Doe,John,Doe",
             "image2.jpg,\"Image, Two\",Jane Smith,Jane,Smith"

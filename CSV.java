@@ -1,7 +1,11 @@
+import javax.swing.*;
+import javax.swing.filechooser.*;
+
 /**
  * The CSV class stores multiple CSVLine objects.
  */
 public class CSV {
+    String fileName;
     CSVLine[] lines;
 
     /**
@@ -14,6 +18,17 @@ public class CSV {
         for (int i = 0; i < ipLines.length; i++) {
             lines[i] = new ImageAndPersonLine(ipLines[i]);
         }
+    }
+
+    public CSV() {
+        getCSVFileName();
+        if (fileName == null) {
+            JOptionPane.showMessageDialog(null, "No file selected. Exiting.");
+            System.exit(0);
+        }
+        // For now, just create an empty CSV object.
+        this.lines = new CSVLine[0];
+        System.out.printf("CSVFile Selected: %s%n", fileName);
     }
 
     /**
@@ -63,5 +78,23 @@ public class CSV {
      */
     public void append(CSVLine line) {
         insertAt(lines.length, line);
+    }
+
+    /**
+     * Opens a file chooser dialog to select a CSV file.
+     * @return The name of the seleceted CSV file, or null if no file was selected.
+     */
+    private void getCSVFileName() {
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        j.setDialogTitle("Select a CSV file");
+        j.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files", "csv");
+        j.addChoosableFileFilter(filter);  
+        int r = j.showOpenDialog(null);
+        if (r == JFileChooser.APPROVE_OPTION) {
+            fileName = j.getSelectedFile().getAbsolutePath();
+        } else {
+            fileName = null;
+        }
     }
 }
