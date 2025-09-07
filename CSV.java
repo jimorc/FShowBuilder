@@ -194,13 +194,12 @@ public class CSV {
                 break;
             case ALPHABETICAL_BY_FULL_NAME:
                 sortLinesAlphabeticallyByFullName(ipMap);
-
                 break;
             case ALPHABETICAL_BY_LAST_NAME_THEN_FIRST_NAME:
                 // Not implemented
                 break;
                 case ALPHABETICAL_BY_FULL_NAME_REVERSE:
-                // Not implemented
+                sortLinesAlphabeticallyByFullNameReverse(ipMap);
                 break;
                 case ALPHABETICAL_BY_LAST_NAME_THEN_FIRST_NAME_REVERSE:
                 // Not implemented
@@ -214,6 +213,21 @@ public class CSV {
         Set<String> fullNamekeys = ipMap.keySet();
         String[] fullNames = fullNamekeys.toArray(new String[ipMap.size()]);
         Arrays.sort(fullNames);
+        for (String fName: fullNames) {
+            ImageAndPersonLine[] linesForName = ipMap.get(fName);
+            for (ImageAndPersonLine line: linesForName) {
+                entries.add(line);
+            }
+        }
+        this.lines = entries.toArray(new CSVLine[entries.size()]);
+    }
+
+    private void sortLinesAlphabeticallyByFullNameReverse(HashMap<String, ImageAndPersonLine[]> ipMap  ) {
+        List<ImageAndPersonLine> entries = new ArrayList<ImageAndPersonLine>();
+        entries.add((ImageAndPersonLine)this.lines[0]);
+        Set<String> fullNamekeys = ipMap.keySet();
+        String[] fullNames = fullNamekeys.toArray(new String[ipMap.size()]);
+        Arrays.sort(fullNames, Collections.reverseOrder());
         for (String fName: fullNames) {
             ImageAndPersonLine[] linesForName = ipMap.get(fName);
             for (ImageAndPersonLine line: linesForName) {
